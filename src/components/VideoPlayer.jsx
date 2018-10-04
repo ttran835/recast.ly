@@ -9,7 +9,6 @@
 //     </div>
 //   </div>
 // );
-
 // PropTypes tell other developers what `props` a component expects
 // Warnings will be shown in the console when the defined rules are violated
 
@@ -18,12 +17,21 @@
 var VideoPlayer = function (props) {
     return (
       <div className="video-player">
+      <div><button onClick={()=>{if(props.autoplay === 0){
+        props.state({autoplayBool:true});
+        props.state({autoplay:1});
+      }
+        else{
+          props.state({autoplayBool:false});
+          props.state({autoplay:0});
+        }}
+      }>AUTOPLAY: {props.autoplayBool.toString().toUpperCase()}</button></div>
         <div className="embed-responsive embed-responsive-16by9">
-          <iframe className="embed-responsive-item" src={"https://www.youtube.com/embed/"+props.video.id.videoId} allowFullScreen></iframe>
+          <iframe className="embed-responsive-item" src={"https://www.youtube.com/embed/"+props.video.id.videoId +"?autoplay=" +props.autoplay} allowFullScreen></iframe>
         </div>
         <div className="video-player-details">
           <h3>{props.video.snippet.title}</h3>
-          <div>{props.video.snippet.description}</div>
+          <div onClick={()=> props.moreDescription}>{props.video.snippet.description}</div>
         </div>
       </div>
     )

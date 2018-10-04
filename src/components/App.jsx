@@ -28,7 +28,9 @@ class App extends React.Component{
       query: 'corgis',
       maxResults: 5,
       videoEmbeddable: "true",
-      type:'video'
+      type:'video',
+      autoplay: 0,
+      autoplayBool: false
     };
 
   }
@@ -40,7 +42,7 @@ class App extends React.Component{
     var context = this;
     var API_key = window.YOUTUBE_API_KEY;
     var maxResults = 5;
-    var url = "https://www.googleapis.com/youtube/v3/search?key=API_key"+ "&q="+ this.state.query +"&part=snippet&maxResults="+maxResults;
+    var url = "https://www.googleapis.com/youtube/v3/search?key=REWRITEAPIKEY"+ "&q="+ this.state.query +"&part=snippet&maxResults="+maxResults;
 
     fetch(url).then(function(response){
       if(response.status >= 400){
@@ -60,7 +62,8 @@ class App extends React.Component{
             <Search searchClick={this.searchClick.bind(this)}/>
         </nav>
         <div className="row">
-            <VideoPlayer video = {this.state.video}/>
+        {console.log(this.state.video)}
+            <VideoPlayer video = {this.state.video} autoplayBool = {this.state.autoplayBool} autoplay = {this.state.autoplay} state = {this.setState.bind(this)}/>
             <VideoList video={this.state.video} videos={this.state.videos} state={this.setState.bind(this)}/>
         </div>
       </div>
