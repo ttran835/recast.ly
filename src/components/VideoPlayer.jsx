@@ -28,7 +28,6 @@ var VideoPlayer = function (props) {
       </div>
     )
   }
-}
 window.VideoPlayer = VideoPlayer;
 VideoPlayer.propTypes = {
   video: React.PropTypes.object.isRequired

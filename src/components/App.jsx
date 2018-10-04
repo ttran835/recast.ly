@@ -21,24 +21,46 @@
 class App extends React.Component{
   constructor(props){
     super(props);
-    console.log(this.props.video[0])
     this.state = {
-      curr:this.props.video[0],
-      list:this.props.video
-    }
+      video:this.props.video[0],
+      videos:this.props.video,
+      key: window.YOUTUBE_API_KEY,
+      query: 'corgis',
+      maxResults: 5,
+      videoEmbeddable: "true",
+      type:'video'
+    };
   }
-  handleClick(video){
-    console.log(video)
+  searchClick(text){
+    this.setState({query:text});
+    this.componentDidMount(text);
+  }
+  componentDidMount(text){
+    var context = this;
+    var API_key = window.YOUTUBE_API_KEY;
+    var maxResults = 5;
+    var url = "https://www.googleapis.com/youtube/v3/search?key=API_key"+ "&q="+ text +"&part=snippet&maxResults="+maxResults;
+
+    fetch(url).then(function(response){
+      if(response.status >= 400){
+        throw new Error('Bad response');
+      }
+      return response.json();
+    }).then(function(data){
+      context.setState({videos:data.items,video:data.items[0]});
+    }).catch(error => {
+      console.log(error);
+    });
   }
   render() {
     return (
         <div>
         <nav className="navbar">
-            <Search />
+            <Search searchClick={this.searchClick.bind(this)}/>
         </nav>
         <div className="row">
-            <VideoPlayer video = {this.state.curr}/>
-            <VideoList video={this.props.video} list={this.state.list} state={this.setState.bind(this)}/>
+            <VideoPlayer video = {this.state.video}/>
+            <VideoList video={this.state.video} videos={this.state.videos} state={this.setState.bind(this)}/>
         </div>
       </div>
     )
