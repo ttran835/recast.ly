@@ -18,19 +18,23 @@
 
 // In the ES6 spec, files are "modules" and do not share a top-level scope
 // `var` declarations will only exist globally where explicitly defined
+// everything
+// range(5*page-5*page+5)
 class App extends React.Component{
   constructor(props){
     super(props);
     this.state = {
       video:this.props.video[0],
+      fullCollection:this.props.video,
       videos:this.props.video,
       key: window.YOUTUBE_API_KEY,
       query: 'corgis',
-      maxResults: 5,
+      maxResults: 10,
       videoEmbeddable: "true",
       type:'video',
       autoplay: 0,
-      autoplayBool: false
+      autoplayBool: false,
+      page: 0
     };
 
   }
@@ -40,9 +44,8 @@ class App extends React.Component{
   }
   componentDidMount(){
     var context = this;
-    var API_key = window.YOUTUBE_API_KEY;
-    var maxResults = 5;
-    var url = "https://www.googleapis.com/youtube/v3/search?key=REWRITEAPIKEY"+ "&q="+ this.state.query +"&part=snippet&maxResults="+maxResults;
+    var maxResults = 50;
+    var url = "https://www.googleapis.com/youtube/v3/search?key=REDOAPIKEY"+ "&q="+ this.state.query +"&part=snippet&maxResults="+maxResults;
 
     fetch(url).then(function(response){
       if(response.status >= 400){
@@ -50,6 +53,7 @@ class App extends React.Component{
       }
       return response.json();
     }).then(function(data){
+      console.log('DATA',data)
       context.setState({videos:data.items,video:data.items[0]});
     }).catch(error => {
       console.log(error);
@@ -57,17 +61,16 @@ class App extends React.Component{
   }
   render() {
     return (
-        <div>
+      <div>
         <nav className="navbar">
-            <Search searchClick={this.searchClick.bind(this)}/>
+          <Search searchClick={this.searchClick.bind(this)}/>
         </nav>
         <div className="row">
-        {console.log(this.state.video)}
-            <VideoPlayer video = {this.state.video} autoplayBool = {this.state.autoplayBool} autoplay = {this.state.autoplay} state = {this.setState.bind(this)}/>
-            <VideoList video={this.state.video} videos={this.state.videos} state={this.setState.bind(this)}/>
+          <VideoPlayer video = {this.state.video} autoplayBool = {this.state.autoplayBool} autoplay = {this.state.autoplay} state = {this.setState.bind(this)}/>
+          <VideoList page={this.state.page} video={this.state.video} videos={this.state.videos} state={this.setState.bind(this)}/>
         </div>
       </div>
-    )
+    );
   }
 }
 window.App = App;

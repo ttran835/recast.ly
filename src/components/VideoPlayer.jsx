@@ -15,27 +15,28 @@
 // In the ES6 spec, files are "modules" and do not share a top-level scope
 // `var` declarations will only exist globally where explicitly defined
 var VideoPlayer = function (props) {
-    return (
-      <div className="video-player">
-      <div><button onClick={()=>{if(props.autoplay === 0){
-        props.state({autoplayBool:true});
-        props.state({autoplay:1});
-      }
-        else{
+  return (
+    <div className="video-player">
+      <div><button onClick={()=>{
+        if(props.autoplay === 0){
+          props.state({autoplayBool:true});
+          props.state({autoplay:1});
+        } else{
           props.state({autoplayBool:false});
           props.state({autoplay:0});
-        }}
+        }
+      }
       }>AUTOPLAY: {props.autoplayBool.toString().toUpperCase()}</button></div>
-        <div className="embed-responsive embed-responsive-16by9">
-          <iframe className="embed-responsive-item" src={"https://www.youtube.com/embed/"+props.video.id.videoId +"?autoplay=" +props.autoplay} allowFullScreen></iframe>
-        </div>
-        <div className="video-player-details">
-          <h3>{props.video.snippet.title}</h3>
-          <div onClick={()=> props.moreDescription}>{props.video.snippet.description}</div>
-        </div>
+      <div className="embed-responsive embed-responsive-16by9">
+        <iframe className="embed-responsive-item" src={"https://www.youtube.com/embed/"+props.video.id.videoId +"?autoplay=" +props.autoplay} allowFullScreen></iframe>
       </div>
-    )
-  }
+      <div className="video-player-details">
+        <h3>{props.video.snippet.title}</h3>
+        <div onClick={()=> props.moreDescription}>{props.video.snippet.description}</div>
+      </div>
+    </div>
+  );
+};
 window.VideoPlayer = VideoPlayer;
 VideoPlayer.propTypes = {
   video: React.PropTypes.object.isRequired

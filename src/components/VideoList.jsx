@@ -17,9 +17,23 @@
 var VideoList = function(props){
     return(
       <ul className="video-list">
-        {props.videos.map((video,index)=>
+        {props.videos.slice(props.page*5,(props.page*5)+5).map((video,index)=>
               <VideoListEntry key={index} video ={video} state={props.state}  />
         )}
+        <button onClick={()=>{
+          if(props.page !== 0){
+            props.state({page:props.page-1})
+          }
+        }
+      }>DOWN</button>
+      <div> {props.page+1} </div>
+      <button onClick={()=>{
+        if ((props.page+1)*5  !== props.videos.length) {
+          props.state({page:props.page+1})
+        }
+
+      }
+    }>UP</button>
       </ul>
     )
 };
