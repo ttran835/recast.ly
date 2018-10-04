@@ -30,16 +30,17 @@ class App extends React.Component{
       videoEmbeddable: "true",
       type:'video'
     };
+
   }
   searchClick(text){
     this.setState({query:text});
-    this.componentDidMount(text);
+    this.componentDidMount(this.state.query);
   }
-  componentDidMount(text){
+  componentDidMount(){
     var context = this;
     var API_key = window.YOUTUBE_API_KEY;
     var maxResults = 5;
-    var url = "https://www.googleapis.com/youtube/v3/search?key=API_key"+ "&q="+ text +"&part=snippet&maxResults="+maxResults;
+    var url = "https://www.googleapis.com/youtube/v3/search?key=API_key"+ "&q="+ this.state.query +"&part=snippet&maxResults="+maxResults;
 
     fetch(url).then(function(response){
       if(response.status >= 400){
